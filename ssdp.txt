@@ -1,0 +1,222 @@
+1. NAT-PMP to 10.1.1.1, External Address Request
+   - resp: Destination Unreachable
+
+2. M-SEARCH
+
+M-SEARCH * HTTP/1.1
+HOST: 239.255.255.250:1900
+ST: urn:schemas-upnp-org:device:InternetGatewayDevice:1
+MAN: "ssdp:discover"
+MX: 2
+
+HTTP/1.1 200 OK
+Cache-Control:max-age=60
+Location:http://10.1.1.111:80/upnp/service/descrip.xml
+Server:NT/5.0 UPnP/1.0
+ST:urn:schemas-upnp-org:device:InternetGatewayDevice:1
+EXT:
+USN:uuid:upnp-InternetGatewayDevice-1_0-08863b669332::urn:schemas-upnp-org:device:InternetGatewayDevice:1
+
+GET /upnp/service/descrip.xml HTTP/1.1
+Host: 10.1.1.111:80
+Connection: Close
+User-Agent: Debian/wheezy/sid, UPnP/1.0, MiniUPnPc/1.6
+
+HTTP/1.0 200 OK
+Server: UPnP/1.0 UPnP-Device-Host/1.0
+Connection: close
+Content-type: text/xml
+
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+    <specVersion>
+        <major>1</major>
+        <minor>0</minor>
+    </specVersion>
+    <URLBase>http://10.1.1.111:80</URLBase>
+    <device>
+        <deviceType>urn:schemas-upnp-org:device:InternetGatewayDevice:1</deviceType>
+        <friendlyName>Belkin N150 Wireless Router</friendlyName>
+        <manufacturer>Belkin International</manufacturer>
+        <manufacturerURL>http://www.Belkin.com</manufacturerURL>
+        <modelDescription>Wireless Router with Ethernet Switch</modelDescription>
+        <modelName>N150 Wireless Router</modelName>
+        <modelNumber>F9K1001</modelNumber>
+        <modelURL>http://www.Belkin.com</modelURL>
+        <serialNumber>201138GB300658</serialNumber>
+        <UDN>uuid:upnp-InternetGatewayDevice-1_0-08863b669332</UDN>
+        <UPC>00000-00001</UPC>
+        <serviceList>
+            <service>
+                <serviceType>urn:schemas-upnp-org:service:Layer3Forwarding:1</serviceType>
+                <serviceId>urn:upnp-org:serviceId:L3Forwarding1</serviceId>
+                <controlURL>/upnp/service/Layer3Forwarding</controlURL>
+                <eventSubURL>/upnp/service/Layer3Forwarding</eventSubURL>
+                <SCPDURL>/upnp/service/L3Frwd.xml</SCPDURL>
+            </service>
+        </serviceList>
+        <deviceList>
+            <device>
+                <deviceType>urn:schemas-upnp-org:device:WANDevice:1</deviceType>
+                <friendlyName>Belkin N150 Wireless Router</friendlyName>
+                <manufacturer>Belkin International</manufacturer>
+                <manufacturerURL>http://www.Belkin.com</manufacturerURL>
+                <modelDescription>Wireless Router with Ethernet Switch</modelDescription>
+                <modelName>N150 Wireless Router</modelName>
+                <modelNumber>F9K1001</modelNumber>
+                <modelURL>http://www.Belkin.com</modelURL>
+                <serialNumber>201138GB300658</serialNumber>
+                <UDN>uuid:upnp-WANDevice-1_0-08863b669332</UDN>
+                <UPC>00000-00001</UPC>
+                <serviceList>
+                    <service>
+                        <serviceType>urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1</serviceType>
+                        <serviceId>urn:upnp-org:serviceId:WANCommonInterfaceConfig</serviceId>
+                        <controlURL>/upnp/service/WANCommonInterfaceConfig</controlURL>
+                        <eventSubURL>/upnp/service/WANCommonInterfaceConfig</eventSubURL>
+                        <SCPDURL>/upnp/service/WANCICfg.xml</SCPDURL>
+                    </service>
+                </serviceList>
+                <deviceList>
+                    <device>
+                        <deviceType>urn:schemas-upnp-org:device:WANConnectionDevice:1</deviceType>
+                        <friendlyName>Belkin N150 Wireless Router</friendlyName>
+                        <manufacturer>Belkin International</manufacturer>
+                        <manufacturerURL>http://www.Belkin.com</manufacturerURL>
+                        <modelDescription>Wireless Router with Ethernet Switch</modelDescription>
+                        <modelName>N150 Wireless Router</modelName>
+                        <modelNumber>F9K1001</modelNumber>
+                        <modelURL>http://www.Belkin.com</modelURL>
+                        <serialNumber>201138GB300658</serialNumber>
+                        <UDN>uuid:upnp-WANConnectionDevice-1_0-08863b669332</UDN>
+                        <UPC>00000-00001</UPC>
+                        <serviceList>
+                            <service>
+                                <serviceType>urn:schemas-upnp-org:service:WANIPConnection:1</serviceType>
+                                <serviceId>urn:upnp-org:serviceId:WANIPConnection</serviceId>
+                                <controlURL>/upnp/service/WANIPConnection</controlURL>
+                                <eventSubURL>/upnp/service/WANIPConnection</eventSubURL>
+                                <SCPDURL>/upnp/service/WANIPCn.xml</SCPDURL>
+                            </service>
+                        </serviceList>
+                    </device>
+                </deviceList>
+            </device>
+        </deviceList>
+        <presentationURL>/index.html</presentationURL>
+    </device>
+</root>
+
+POST /upnp/service/WANIPConnection HTTP/1.1
+Host: 10.1.1.111
+User-Agent: Debian/wheezy/sid, UPnP/1.0, MiniUPnPc/1.6
+Content-Length: 271
+Content-Type: text/xml
+SOAPAction: "urn:schemas-upnp-org:service:WANIPConnection:1#GetStatusInfo"
+Connection: Close
+Cache-Control: no-cache
+Pragma: no-cache
+
+<?xml version="1.0"?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><s:Body><u:GetStatusInfo xmlns:u="urn:schemas-upnp-org:service:WANIPConnection:1"></u:GetStatusInfo></s:Body></s:Envelope>
+
+HTTP/1.0 200 OK
+Connection:  close
+Server: UPnP/1.0 UPnP-Device-Host/1.0
+Content-length: 467
+Content-Type: text/xml; charset="utf-8"
+
+<?xml version="1.0"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><SOAP-ENV:Body><m:GetStatusInfoResponse xmlns:m="urn:schemas-upnp-org:service:WANIPConnection:1"><NewConnectionStatus>Disconnected</NewConnectionStatus><NewLastConnectionError>ERROR_NONE</NewLastConnectionError><NewUptime>0</NewUptime></m:GetStatusInfoResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>
+
+GET /upnp/service/descrip.xml HTTP/1.1
+Host: 10.1.1.111:80
+Connection: Close
+User-Agent: Debian/wheezy/sid, UPnP/1.0, MiniUPnPc/1.6
+
+HTTP/1.0 200 OK
+Server: UPnP/1.0 UPnP-Device-Host/1.0
+Connection: close
+Content-type: text/xml
+
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+    <specVersion>
+        <major>1</major>
+        <minor>0</minor>
+    </specVersion>
+    <URLBase>http://10.1.1.111:80</URLBase>
+    <device>
+        <deviceType>urn:schemas-upnp-org:device:InternetGatewayDevice:1</deviceType>
+        <friendlyName>Belkin N150 Wireless Router</friendlyName>
+        <manufacturer>Belkin International</manufacturer>
+        <manufacturerURL>http://www.Belkin.com</manufacturerURL>
+        <modelDescription>Wireless Router with Ethernet Switch</modelDescription>
+        <modelName>N150 Wireless Router</modelName>
+        <modelNumber>F9K1001</modelNumber>
+        <modelURL>http://www.Belkin.com</modelURL>
+        <serialNumber>201138GB300658</serialNumber>
+        <UDN>uuid:upnp-InternetGatewayDevice-1_0-08863b669332</UDN>
+        <UPC>00000-00001</UPC>
+        <serviceList>
+            <service>
+                <serviceType>urn:schemas-upnp-org:service:Layer3Forwarding:1</serviceType>
+                <serviceId>urn:upnp-org:serviceId:L3Forwarding1</serviceId>
+                <controlURL>/upnp/service/Layer3Forwarding</controlURL>
+                <eventSubURL>/upnp/service/Layer3Forwarding</eventSubURL>
+                <SCPDURL>/upnp/service/L3Frwd.xml</SCPDURL>
+            </service>
+        </serviceList>
+        <deviceList>
+            <device>
+                <deviceType>urn:schemas-upnp-org:device:WANDevice:1</deviceType>
+                <friendlyName>Belkin N150 Wireless Router</friendlyName>
+                <manufacturer>Belkin International</manufacturer>
+                <manufacturerURL>http://www.Belkin.com</manufacturerURL>
+                <modelDescription>Wireless Router with Ethernet Switch</modelDescription>
+                <modelName>N150 Wireless Router</modelName>
+                <modelNumber>F9K1001</modelNumber>
+                <modelURL>http://www.Belkin.com</modelURL>
+                <serialNumber>201138GB300658</serialNumber>
+                <UDN>uuid:upnp-WANDevice-1_0-08863b669332</UDN>
+                <UPC>00000-00001</UPC>
+                <serviceList>
+                    <service>
+                        <serviceType>urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1</serviceType>
+                        <serviceId>urn:upnp-org:serviceId:WANCommonInterfaceConfig</serviceId>
+                        <controlURL>/upnp/service/WANCommonInterfaceConfig</controlURL>
+                        <eventSubURL>/upnp/service/WANCommonInterfaceConfig</eventSubURL>
+                        <SCPDURL>/upnp/service/WANCICfg.xml</SCPDURL>
+                    </service>
+                </serviceList>
+                <deviceList>
+                    <device>
+                        <deviceType>urn:schemas-upnp-org:device:WANConnectionDevice:1</deviceType>
+                        <friendlyName>Belkin N150 Wireless Router</friendlyName>
+                        <manufacturer>Belkin International</manufacturer>
+                        <manufacturerURL>http://www.Belkin.com</manufacturerURL>
+                        <modelDescription>Wireless Router with Ethernet Switch</modelDescription>
+                        <modelName>N150 Wireless Router</modelName>
+                        <modelNumber>F9K1001</modelNumber>
+                        <modelURL>http://www.Belkin.com</modelURL>
+                        <serialNumber>201138GB300658</serialNumber>
+                        <UDN>uuid:upnp-WANConnectionDevice-1_0-08863b669332</UDN>
+                        <UPC>00000-00001</UPC>
+                        <serviceList>
+                            <service>
+                                <serviceType>urn:schemas-upnp-org:service:WANIPConnection:1</serviceType>
+                                <serviceId>urn:upnp-org:serviceId:WANIPConnection</serviceId>
+                                <controlURL>/upnp/service/WANIPConnection</controlURL>
+                                <eventSubURL>/upnp/service/WANIPConnection</eventSubURL>
+                                <SCPDURL>/upnp/service/WANIPCn.xml</SCPDURL>
+                            </service>
+                        </serviceList>
+                    </device>
+                </deviceList>
+            </device>
+        </deviceList>
+        <presentationURL>/index.html</presentationURL>
+    </device>
+</root>
+
+
