@@ -1,7 +1,11 @@
 #include "common.hpp"
 
 #include <vector>
+#include <iterator>
+#include <iostream>
 using std::vector;
+using std::istreambuf_iterator;
+using std::cin;
 
 int whisper(unsigned int data,
             unsigned int source_addr, unsigned short source_port,
@@ -104,10 +108,26 @@ unsigned int parse_host(const char* host){
     return i.s_addr;
 }
 
+void send_all(const char* d, int n,
+              unsigned int src_host, unsigned short src_port, unsigned int dst_host, unsigned short dst_port)
+{
+    unsigned short orig_src_port = src_port;
+    vector<unsigned int> data((n+1)/(sizeof(unsigned int))+1, 0);
+    bcopy(d, (char*)&data[0], n);
+    for (vector<unsigned int>::iterator i = data.begin(); i != data.end(); ++i){
+        ++src_port;
+        if (src_port > 65000){
+            src_port = orig_src_port;
+        }
+        whisper((*i) ^ FUZZER, src_host, src_port, dst_host, dst_port);
+        usleep(100*1000);
+    }
+}
+
 int main(int argc, char** argv){
     srand(time(NULL));
 
-    if (argc != 6){
+    if (argc != 6 && argc != 5){
         fprintf(stderr, "Usage: %s <src-ip> <src-port> <dest-ip> <dest-port> <text>\n", *argv);
         return EXIT_FAILURE;
     }
@@ -117,12 +137,11 @@ int main(int argc, char** argv){
     unsigned int    dst_host = parse_host(argv[3]);
     unsigned short  dst_port = strtol(argv[4], NULL, 10);
 
-    int n = strlen(argv[5]);
-    vector<unsigned int> data((n/4)+1, 0);
-    bcopy(argv[5], (char*)&data[0], n);
-    for (vector<unsigned int>::iterator d = data.begin(); d != data.end(); ++d){
-        whisper((*d) ^ FUZZER, src_host, src_port, dst_host, dst_port);
-        usleep(100*1000);
+    if (argc > 5){
+        send_all(argv[5], strlen(argv[5]), src_host, src_port, dst_host, dst_port);
+    }else{
+        vector<char> in((istreambuf_iterator<char>(cin)), istreambuf_iterator<char>());
+        send_all(&in[0], in.size(), src_host, src_port, dst_host, dst_port);
     }
 }
 

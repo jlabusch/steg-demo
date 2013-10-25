@@ -1,6 +1,6 @@
 #include "common.hpp"
 
-const unsigned int FUZZER = 0xad0cc0da;
+const unsigned int FUZZER = 0xad3cc7da;
 
 /* From ping.c:
  *

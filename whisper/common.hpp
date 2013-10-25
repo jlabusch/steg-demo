@@ -13,6 +13,7 @@ extern "C"{
     #include <string.h>
     #include <time.h>
     #include <errno.h>
+    #include <ctype.h>
     #include <unistd.h>
     #include <netdb.h>
     #include <netinet/in.h>
