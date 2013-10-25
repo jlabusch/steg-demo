@@ -1,3 +1,5 @@
 steg
+whisper-client
+whisper-server
 *.o
 .*.swp
