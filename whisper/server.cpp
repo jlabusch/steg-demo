@@ -1,7 +1,13 @@
 #include "common.hpp"
 
 int main(int argc, char** argv){
-    unsigned short port = 12345; // TODO
+    unsigned short port = 12345;
+
+    if (argc > 1){
+        port = atoi(argv[1]);
+    }else{
+        fprintf(stderr, "No port specified, listening for 12345\n");
+    }
 
     struct {
         struct iphdr ip;
