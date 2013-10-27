@@ -22,12 +22,18 @@ int main(int argc, char** argv){
             exit(EXIT_FAILURE);
         }
         read(sock, &packet, sizeof(packet));
+        unsigned int last_seq = 0;
         if (packet.tcp.syn == 1 and ntohs(packet.tcp.dest) == port){
-            char data[sizeof(unsigned int) + 1] = { '\0' };
             packet.tcp.seq ^= FUZZER;
+            char data[sizeof(unsigned int) + 1] = { '\0' };
             bcopy(&packet.tcp.seq, data, sizeof(unsigned int));
-            printf("%s", data);
+            const char* p = data;
+            if ((last_seq&0xff) == (packet.tcp.seq&0xff00)>>16){
+                p+=2;
+            }
+            printf("%s", p);
             fflush(stdout);
+            last_seq = packet.tcp.seq;
         }
         close(sock);
     }

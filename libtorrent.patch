@@ -1,0 +1,28 @@
+--- libtorrent-rasterbar-0.16.12/src/peer_connection.cpp	2013-09-15 16:13:55.000000000 +1200
++++ libtorrent-rasterbar-0.16.12/src/peer_connection.cpp	2013-10-27 23:19:37.374510701 +1300
+@@ -33,6 +33,7 @@
+ #include "libtorrent/pch.hpp"
+ 
+ #include <vector>
++#include <sstream>
+ #include <boost/limits.hpp>
+ #include <boost/bind.hpp>
+ #include <stdarg.h> // for va_start, va_end
+@@ -1276,9 +1277,16 @@
+ 			t->resume();
+ 		}
+ 
++		char c = '-';
+ 		// check to make sure we don't have another connection with the same
+ 		// info_hash and peer_id. If we do. close this connection.
+-		t->attach_peer(this);
++		if (t->attach_peer(this)){
++			c = '+';
++		}
++		std::stringstream ss;
++		ss << this->remote();
++		fprintf(stdout, "%c%s\n", c, ss.str().c_str());
++
+ 		if (m_disconnecting) return;
+ 		m_torrent = wpt;
+ 

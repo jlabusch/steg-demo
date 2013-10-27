@@ -3,9 +3,11 @@
 #include <vector>
 #include <iterator>
 #include <iostream>
+#include <functional>
 using std::vector;
 using std::istreambuf_iterator;
 using std::cin;
+using std::min;
 
 int whisper(unsigned int data,
             unsigned int source_addr, unsigned short source_port,
@@ -28,7 +30,7 @@ int whisper(unsigned int data,
     packet.ip.saddr = source_addr;
     packet.ip.daddr = dest_addr;
 
-    packet.tcp.source = htons(source_port); // TODO: data
+    packet.tcp.source = htons(source_port);
     packet.tcp.seq = data;
     packet.tcp.dest = htons(dest_port);
 
@@ -112,15 +114,16 @@ void send_all(const char* d, int n,
               unsigned int src_host, unsigned short src_port, unsigned int dst_host, unsigned short dst_port)
 {
     unsigned short orig_src_port = src_port;
-    vector<unsigned int> data((n+1)/(sizeof(unsigned int))+1, 0);
-    bcopy(d, (char*)&data[0], n);
-    for (vector<unsigned int>::iterator i = data.begin(); i != data.end(); ++i){
+    const char* end = d+n;
+    for (const char* i = d; i < end; i+=2){
         ++src_port;
         if (src_port > 65000){
             src_port = orig_src_port;
         }
-        whisper((*i) ^ FUZZER, src_host, src_port, dst_host, dst_port);
-        usleep(100*1000);
+        unsigned int seq = 0;
+        bcopy(i, &seq, min(unsigned(end-i), sizeof(seq)));
+        whisper(seq ^ FUZZER, src_host, src_port, dst_host, dst_port);
+        usleep(50*1000);
     }
 }
 
