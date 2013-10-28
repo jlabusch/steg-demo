@@ -9,13 +9,12 @@ whisper steg:
 
 torrent:
 	test -d $(TORRENT) || tar -zxf $(TORRENT).tar.gz
-	grep -q sstream $(TORRENT)/src/peer_connection.cpp || patch -p0 < libtorrent.patch
-	cd $(TORRENT) && ./configure && make && cd examples && make simple_client
+	cd $(TORRENT) && ./configure --enable-logging=verbose --enable-examples && make
 	ln -sf $(TORRENT)/examples/simple_client .
 
 clean:
 	make -C whisper clean
 	make -C steg clean
 	rm -f simple_client
-	rm -fr $(TORRENT)
+	rm -fr $(TORRENT) lsd.log libtorrent_logs*
 
