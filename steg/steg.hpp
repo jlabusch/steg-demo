@@ -8,6 +8,8 @@
 #include <vector>
 #include <CImg.h>
 
+const int STRIDE = 17;
+
 std::string decode(const char* infile)
 {
     using namespace std;
@@ -17,7 +19,6 @@ std::string decode(const char* infile)
     unsigned char *pi = img.data(),
                   *pend = img.data() + img.size();
     unsigned int offset = 0;
-    //copy(img.begin(), img.end(), ostream_iterator<unsigned char>(cout));
     while (pi < pend){
         switch(offset){
             case 0x80:
@@ -37,7 +38,7 @@ std::string decode(const char* infile)
         }else{
             current &= ~offset;
         }
-        ++pi;
+        pi+=STRIDE;
     }
     return string(msg.begin(), msg.end());
 }
@@ -53,8 +54,6 @@ void encode(const char* infile, const char* outfile, const char* msg)
         switch(offset){
             case 0x80:
                 if (*msg == '\0'){
-                    // copy(img.begin(), img.end(), ostream_iterator<unsigned char>(cout));
-                    // All done!
                     img.save(outfile);
                     return;
                 }
@@ -70,7 +69,7 @@ void encode(const char* infile, const char* outfile, const char* msg)
         }else{
             *pi &= 0xfe;
         }
-        ++pi;
+        pi+=STRIDE;
     }
     // Save what we can, even if it truncates the message.
     img.save(outfile);
